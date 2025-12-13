@@ -7,10 +7,10 @@ terraform {
   }
 
  backend "azurerm" {
-  resource_group_name = "fuddu-rg"
-  storage_account_name = "fuddustorageacc"
-  container_name = "fudducontainer"
-  key = "fuddu.terraform.tfstate"
+ # resource_group_name = "fuddu-rg"
+ # storage_account_name = "fuddustorageacc"
+ # container_name = "fudducontainer"
+#  key = "fuddu.terraform.tfstate"
 
  }
 
