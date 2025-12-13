@@ -18,10 +18,10 @@ stages:
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
               backendServiceArm: 'taget30'
-              backendAzureRmResourceGroupName: "fuddu-rg2"
-              backendAzureRmStorageAccountName: 'fuddustorageacc2'
-              backendAzureRmContainerName: 'fudducontainer2'
-              backendAzureRmKey: 'fuddu2.terraform.tfstate'
+              backendAzureRmResourceGroupName: "fuddu-rg"
+              backendAzureRmStorageAccountName: 'fuddustorageacc'
+              backendAzureRmContainerName: 'fudducontainer'
+              backendAzureRmKey: 'fuddu.terraform.tfstate'
 
           - task: TerraformTask@5
             inputs:
