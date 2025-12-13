@@ -83,6 +83,7 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'plan'
+              commandOptions: '-detailed-exitcode -lock-timeout=5m'
               workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
               environmentServiceNameAzureRM: 'taget30'
 
