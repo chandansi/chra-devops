@@ -83,9 +83,9 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              commandOptions: '-detailed-exitcode -lock-timeout=5m'
               workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
               environmentServiceNameAzureRM: 'taget30'
+              commandOptions: "-var-file=dev.tfvars -input=false"
 
 
   - stage: Apply
@@ -109,8 +109,8 @@ stages:
               provider: 'azurerm'
               command: 'apply'
               workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
-              commandOptions: '-auto-approve'
               environmentServiceNameAzureRM: 'taget30'
+              commandOptions: "-var-file=dev.tfvars -input=false"
 
 
 
