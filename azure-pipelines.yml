@@ -89,6 +89,7 @@ stages:
 
   - stage: Apply
     displayName: "approval & governance"
+    dependsOn: "cost & review tool"
     jobs:
       - job: apply
         pool: target_agent
@@ -110,8 +111,6 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
               commandOptions: '-auto-approve'
               environmentServiceNameAzureRM: 'taget30'
-
-
 
 
 
