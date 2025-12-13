@@ -6,8 +6,8 @@ variable "vm_stg_ac" {
         storage_account_name            = string
         account_tier                    = string
         account_replication_type        = string
-        //storage_container_name          = string
-       // container_access_type           = string
+        storage_container_name          = string
+        container_access_type           = string
        
     }))
 }
@@ -24,11 +24,11 @@ resource "azurerm_storage_account" "vm_storage"{
     azurerm_resource_group.vm_resg
   ]
 }
-# resource "azurerm_storage_container" "vm_container" {
-#   for_each            = var.vm_rgss
-#   name                = each.value.storage_container_name
-#   storage_account_id = azurerm_storage_account.vm_storage[each.key].id
+resource "azurerm_storage_container" "vm_container" {
+  for_each            = var.vm_stg_ac
+  name                = each.value.storage_container_name
+  storage_account_id = azurerm_storage_account.vm_storage[each.key].id
 
-#   container_access_type = "blob"
+  container_access_type = "blob"
   
-# }
+}
