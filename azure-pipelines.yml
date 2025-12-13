@@ -5,35 +5,7 @@ pool: target_agent
 
 
 stages:
-  - stage: ClearLock
-    displayName: "Clear Stale Lock (One Time)"
-    jobs:
-      - job: Unlock
-        pool: target_agent
-        steps:
-          - task: TerraformTask@5
-            displayName: 'Initialize Backend'
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
-              backendServiceArm: 'taget30'
-              backendAzureRmStorageAccountName: 'vmstg007'
-              backendAzureRmContainerName: 'vmcontainer07'
-              backendAzureRmKey: 'infra.tfstate'
-
-          - task: PowerShell@2
-            displayName: 'Force Unlock'
-            inputs:
-              targetType: 'inline'
-              script: |
-                cd $(System.DefaultWorkingDirectory)/environments/dev
-                terraform force-unlock -force 7b623853-2d50-0b7b-daae-e37dff08cbee
-              
-
-    # ... rest of your pipeline
   - stage: PreBuild
-    dependsOn: ClearLock
     displayName: "Pre-Build"
     jobs:
       - job: BuildJob
