@@ -1,5 +1,5 @@
 trigger:
-  - today
+  - none
 
 pool: target_agent
 
