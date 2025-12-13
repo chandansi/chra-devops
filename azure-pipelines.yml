@@ -1,5 +1,5 @@
 trigger:
-  - none
+  - target_agent
 
 pool: target_agent
 
