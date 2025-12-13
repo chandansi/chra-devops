@@ -85,7 +85,7 @@ stages:
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
               environmentServiceNameAzureRM: 'taget30'
-              commandOptions: "-var-file=dev.tfvars -input=false"
+              commandOptions: "-var=avset=$(avset) -input=false"
 
 
   - stage: Apply
@@ -110,7 +110,7 @@ stages:
               command: 'apply'
               workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
               environmentServiceNameAzureRM: 'taget30'
-              commandOptions: "-var-file=dev.tfvars -input=false"
+              commandOptions: "-var=avset=$(avset) -auto-approve -input=false"
 
 
 
