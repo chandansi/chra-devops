@@ -1,0 +1,116 @@
+trigger:
+  - today
+
+pool: target_agent
+
+
+stages:
+  - stage: PreBuild
+    displayName: "Pre-Build"
+    jobs:
+      - job: BuildJob
+        displayName: "Terraform Init/Validate/Fmt"
+        steps:
+
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+              backendServiceArm: 'taget30'
+              backendAzureRmStorageAccountName: 'vmstg007'
+              backendAzureRmContainerName: 'vmcontainer07'
+              backendAzureRmKey: 'infra.tfstate'
+
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'custom'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+              outputTo: 'console'
+              customCommand: 'fmt'
+              environmentServiceNameAzureRM: 'taget30'
+
+  - stage: ScanTool
+    dependsOn: PreBuild
+    displayName: "Scanning Tool"
+    jobs:
+      - job: Scan_TFSec
+        displayName: "Run TFSec Scan"
+
+        steps:
+          - task: tfsec@1
+            inputs:
+              version: 'v1.26.0'
+              dir: '$(System.DefaultWorkingDirectory)/environments/dev'
+
+      - job: Scan_TFLint
+        displayName: "Run TFLint Scan"
+        
+        steps:
+          - task: PowerShell@2
+            continueOnError: true
+            inputs:
+              targetType: 'inline'
+              script: |
+                tflint 
+                
+              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+  - stage: Plan 
+    displayName: "cost & review tool"
+    dependsOn: ScanTool
+    jobs:
+      - job: Terraformplan  
+        displayName: "Terraform plan"
+        pool: target_agent
+        steps:
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+              backendServiceArm: 'taget30'
+              backendAzureRmStorageAccountName: 'vmstg007'
+              backendAzureRmContainerName: 'vmcontainer07'
+              backendAzureRmKey: 'infra.tfstate'
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+              environmentServiceNameAzureRM: 'taget30'
+
+
+  - stage: Apply
+    displayName: "approval & governance"
+    dependsOn: "cost & review tool"
+    jobs:
+      - job: apply
+        pool: target_agent
+        steps:
+
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+              backendServiceArm: 'taget30'
+              backendAzureRmStorageAccountName: 'vmstg007'
+              backendAzureRmContainerName: 'vmcontainer07'
+              backendAzureRmKey: 'infra.tfstate'
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+              commandOptions: '-auto-approve'
+              environmentServiceNameAzureRM: 'taget30'
+
+
+
