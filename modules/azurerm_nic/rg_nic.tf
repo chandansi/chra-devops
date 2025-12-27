@@ -25,4 +25,5 @@ resource "azurerm_network_interface" "nic_resources07" {
     private_ip_address_allocation = each.value.private_ip_address_allocation
     
   }
+  
 }

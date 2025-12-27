@@ -14,29 +14,25 @@ module "resource_group" {
 
 module "network" {
   source     = "../../modules/azurerm_networking"
-  vnet_infra = var.vnet_infra
-  vm_nsg1    = var.vm_nsg1 # pass the NSG variable
-  vm_sub     = var.vm_sub  # pass the subnet variable
+   vnet_infra = var.vnet_infra
+  
   depends_on = [module.resource_group]
 }
 
-# module "subnet" {
-#   source     = "../../modules/azurerm_networking"
-#   vm_sub     = var.vm_sub
-#   depends_on = [module.network]
-# }
 
-# module "nsg" {
-#   source     = "../../modules/azurerm_networking"
-#   vm_nsg     = var.vm_nsg1
-#   depends_on = [module.resource_group, module.network, module.subnet,module]
-# }
+module "subnet" {
+  source     = "../../modules/azurerm_subnet"
+  vm_sub     = var.vm_sub
+  depends_on = [module.network]
+}
 
-# module "nic" {
-#   source     = "../../modules/azurerm_compute"
-#   vm_nic     = var.vm_nic
-#   depends_on = [module.subnet]
-# }
+module "nsg" {
+  source     = "../../modules/azurerm_nsg"
+  vm_nsg1     = var.vm_nsg1
+  depends_on = [module.subnet]
+}
+
+
 
 # module "avset" {
 #   source     = "../../modules/azurerm_compute"
@@ -48,10 +44,15 @@ module "rgvm" {
   source          = "../../modules/azurerm_compute"
   vm              = var.vm
   avset           = var.avset
-  vm_nic          = var.vm_nic
-  depends_on      = [module.resource_group, module.network]
   public_key_path = "~/.ssh/id_rsa.pub"
+  depends_on      = [module.nic]
 
+}
+
+module "nic" {
+  source     = "../../modules/azurerm_nic"
+  vm_nic     = var.vm_nic
+  depends_on = [module.subnet, module.nsg]
 }
 
 module "keyvault" {
@@ -61,7 +62,7 @@ module "keyvault" {
 }
 
 module "public_ip" {
-  source = "../../modules/azurerm_public_ip"
-  p_var  = var.p_var
+  source     = "../../modules/azurerm_public_ip"
+  p_var      = var.p_var
   depends_on = [module.resource_group]
 }

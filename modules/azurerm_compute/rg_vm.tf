@@ -44,9 +44,9 @@ resource "azurerm_linux_virtual_machine" "lin-vm" {
   network_interface_ids = var.vm[each.key].network_interface_ids
   
   
-  depends_on = [
-    azurerm_network_interface.nic_resources07
-  ]
+  # depends_on = [
+  #   azurerm_network_interface.nic_resources07
+  # ]
   admin_ssh_key {
     username   = each.value.admin_ssh_key.username
     public_key = file(var.public_key_path)

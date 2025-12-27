@@ -5,25 +5,16 @@ terraform {
       version = "4.48.0"
     }
   }
-  # backend "azurerm" {
-
-  # }
-
-  #  backend "azurerm" {
-  #   resource_group_name = "rai-rg-t01"
-  #   storage_account_name = "chandanstorageacct01"
-  #   container_name = "practice01"
-  #   key = "containerstate.tf"
-  #  }
 
 }
 provider "azurerm" {
-  subscription_id = "12070104-5366-47e7-ae69-d5a2bd98c79e"
+  subscription_id = "2d56d9b3-4522-4609-bac1-d4af7eea379e"
+  tenant_id       = "175676df-2563-43c5-9e4f-af83c4ef4ff2"
 
   features {
     key_vault {
       purge_soft_delete_on_destroy    = true
       recover_soft_deleted_key_vaults = true
+    }
   }
-  }  
 }

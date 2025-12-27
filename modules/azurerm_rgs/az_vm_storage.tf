@@ -30,5 +30,8 @@ resource "azurerm_storage_container" "vm_container" {
   storage_account_id = azurerm_storage_account.vm_storage[each.key].id
 
   container_access_type = "blob"
+   depends_on = [
+    azurerm_storage_account.vm_storage
+  ] 
   
 }

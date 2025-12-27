@@ -18,7 +18,7 @@ resource "azurerm_subnet" "subnet_resources07" {
   address_prefixes     = each.value.subnet_address_prefixes
 
   
-  depends_on = [
-    azurerm_virtual_network.vnet_resources07
-  ]
+  # depends_on = [
+  #   azurerm_virtual_network.vnet_resources07
+  # ]
 }
