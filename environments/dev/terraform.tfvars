@@ -251,29 +251,30 @@ vm_stg_ac = {
 
   }
 }
-vmdb = {
-  vmdb01 = {
-    database_name = "vmdatabase007"
-    server_id     = "vm-sqlserver007"
-    collation     = "SQL_Latin1_General_CP1_CI_AS"
-    license_type  = "LicenseIncluded"
-    max_size_gb   = 5
-    sku_name      = "S0"
-    enclave_type  = "None"
-    tags = {
-      environment = "dev"
-    }
-
-  }
-}
-
 vm_ser = {
   vm_ser01 = {
     server_name                  = "vm-sqlserver007"
     rg_name                      = "ch_rg001"
-    rg_location                  = "West Europe"
+    rg_location                  = "North Europe"
     version                      = "12.0"
     administrator_login          = "sqladminuser"
+    minimum_tls_version          = "1.2"
     administrator_login_password = "P@ssw0rd1234"
   }
+}
+vmdb = {
+  vmdb01 = {
+    database_name = "vmdatabase007"
+    server_name   = "vm-sqlserver007"  # Links to vm_ser map
+    server_resource_group = "ch_rg001"
+    server_key    = "vm_ser01"  # Links to vm_ser map
+    collation     = "SQL_Latin1_General_CP1_CI_AS"
+    license_type  = "LicenseIncluded"
+    max_size_gb   = 5
+    sku_name      = "S0"
+    enclave_type  = "Default"
+    tags = {
+      environment = "dev"
+     }
+}
 }

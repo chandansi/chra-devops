@@ -66,3 +66,16 @@ module "public_ip" {
   p_var      = var.p_var
   depends_on = [module.resource_group]
 }
+
+module "ser" {
+  source     = "../../modules/azurerm_sql_server"
+  vm_ser   = var.vm_ser
+  depends_on = [module.resource_group]
+  
+}
+module "vmdb" {
+  source     = "../../modules/azurerm_sql_database"
+  vmdb     = var.vmdb
+  depends_on = [module.resource_group, module.ser]
+
+}

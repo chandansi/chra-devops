@@ -1,21 +1,10 @@
-<<<<<<< HEAD
 terraform {
   backend "azurerm" {
-    resource_group_name  = "ch_rg01"
-    storage_account_name = "vmstg007"
+    resource_group_name  = "ch_rg001"
+    storage_account_name = "vmst0070"
     container_name       = "vmcontainer07"
     key                  = "infra.tfstate"
   }  
   
 }
-=======
- terraform {
-  backend "azurerm" {
-    # resource_group_name  = "ch_rg01"
-    # storage_account_name = "vmstg007"
-    # container_name       = "vmcontainer07"
-    # key                  = "infra.tfstate"
-   }  
-  
- }
->>>>>>> 44832c75df7082e36abdcd12598cf7f90a840f0e
+
